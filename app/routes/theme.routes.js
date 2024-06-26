@@ -21,5 +21,5 @@ module.exports = (app) => {
   // Delete all Theme
   router.delete("/", themes.deleteAll);
 
-  app.use("/api/themes", router);
+  app.use("/resumeapi/themes", router);
 };

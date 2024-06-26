@@ -36,5 +36,5 @@ module.exports = (app) => {
   );
 
   router.delete("/:id/stories/:storyId/characters", StoryCharacter.deleteAll);
-  app.use("/api/users", router);
+  app.use("/resumeapi/users", router);
 };

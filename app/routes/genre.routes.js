@@ -21,5 +21,5 @@ module.exports = (app) => {
   // Delete all Genre
   router.delete("/", genres.deleteAll);
 
-  app.use("/api/genres", router);
+  app.use("/resumeapi/genres", router);
 };

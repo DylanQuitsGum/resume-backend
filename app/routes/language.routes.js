@@ -21,5 +21,5 @@ module.exports = (app) => {
   // Delete all Language
   router.delete("/", languages.deleteAll);
 
-  app.use("/api/languages", router);
+  app.use("/resumeapi/languages", router);
 };

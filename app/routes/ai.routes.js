@@ -5,5 +5,5 @@ module.exports = (app) => {
   // generate story
   router.post("/", ai.generateStory);
 
-  app.use("/api/ai", router);
+  app.use("/resumeapi/ai", router);
 };
