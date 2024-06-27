@@ -1,56 +1,37 @@
-const dbConfig = require("../config/db.config.js");
+const config = require("../config/db.config.js");
+
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-});
+const sequelize = new Sequelize(
+  config.DB,
+  config.USER,
+  config.PASSWORD,
+  {
+    host: config.HOST,
+    dialect: config.dialect,
+    pool: {
+      max: config.pool.max,
+      min: config.pool.min,
+      acquire: config.pool.acquire,
+      idle: config.pool.idle
+    }
+  }
+);
+
 const db = {};
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.character = require("./character.model.js")(sequelize, Sequelize);
-db.genre = require("./genre.model.js")(sequelize, Sequelize);
-db.country = require("./country.model.js")(sequelize, Sequelize);
-db.language = require("./language.model.js")(sequelize, Sequelize);
-db.theme = require("./theme.model.js")(sequelize, Sequelize);
+db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
-db.story = require("./story.model.js")(sequelize, Sequelize);
-db.storyCharacter = require("./storyCharacter.model.js")(sequelize, Sequelize);
-db.user = require("./user.model.js")(sequelize, Sequelize);
+db.role.belongsToMany(db.user, {
+  through: "user_roles"
+});
+db.user.belongsToMany(db.role, {
+  through: "user_roles"
+});
 
-// foreign key for story
-db.user.hasMany(
-  db.story,
-  { as: "story" },
-  { foreignKey: "userId", as: "stories", onDelete: "CASCADE" }
-);
-db.story.belongsTo(
-  db.user,
-  { as: "user" },
-  { foreignKey: "userId", as: "user", onDelete: "CASCADE" }
-);
-
-db.story.hasMany(
-  db.storyCharacter,
-  { as: "storyCharacter" },
-  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
-);
-
-db.user.hasMany(
-  db.character,
-  { as: "character" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-db.character.belongsTo(
-  db.user,
-  { as: "user" },
-  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
-);
+db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;
