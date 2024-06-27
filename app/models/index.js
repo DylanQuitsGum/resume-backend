@@ -28,12 +28,21 @@ db.education = require("../models/education.model.js")(sequelize,Sequelize);
 db.employer = require("./employer.model.js")(sequelize, Sequelize);
 db.award = require("../models/award.model.js")(sequelize, Sequelize);
 db.skill = require("../models/skill.model.js")(sequelize, Sequelize);
+db.resume = require("../models/resume.model.js")(sequelize, Sequelize);
+db.comment = require("../models/comment.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles"
 });
 db.user.belongsToMany(db.role, {
   through: "user_roles"
+});
+
+db.comment.belongsToMany(db.resume, {
+  through: "resume_comments"
+});
+db.resume.belongsToMany(db.comment, {
+  through: "resume_comments"
 });
 
 db.user.hasMany(
@@ -75,6 +84,28 @@ db.user.hasMany(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 db.skill.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+
+db.user.hasMany(
+  db.resume,
+  { as: "resume" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.resume.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+
+db.user.hasMany(
+  db.comment,
+  { as: "comment" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.comment.belongsTo(
   db.user,
   { as: "user" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
