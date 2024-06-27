@@ -1,6 +1,6 @@
 # Recipe Backend with Node
 
-This application allows users to create and maintain a list of recipes that have steps and ingredients. Please visit https://github.com/OC-ComputerScience/recipe-frontend for the Vue 3 frontend repository.
+This application allows users to create and maintain a list of resumes generated via AI. Please visit https://github.com/DylanQuitsGum/resume-frontend for the Vue 3 frontend repository.
 
 #### Please note:
 
@@ -8,10 +8,10 @@ This application allows users to create and maintain a list of recipes that have
 
 ## Project Setup
 
-1. Clone the project into your **XAMPP/xamppfiles/htdocs** directory.
+1. Clone the project into your **XAMPP/xamppfiles/htdocs/seprojects** directory.
 
 ```
-git clone https://github.com/OC-ComputerScience/recipe-backend.git
+git clone https://github.com/DylanQuitsGum/resume-backend.git
 ```
 
 2. Install the project.
@@ -29,7 +29,7 @@ npm install
    - Add the following line as the **last line**:
 
    ```
-   ProxyPass /recipeapi http://localhost:3200/recipeapi
+   ProxyPass /resumeapi http://localhost:3201/resumeapi
    ```
 
    - Find the following line and remove the **#** at the front of the line.
@@ -42,7 +42,7 @@ npm install
    - Save the file.
    - **Restart Apache** and exit XAMPP.
 
-4. Make a local **recipe_db** database.
+4. Make a local **resume_db** database.
 
    - Create a schema/database.
    - The Sequelize in this project will make all the tables for you.
@@ -50,10 +50,11 @@ npm install
 5. Add a local **.env** file and make sure that the **database** variables are correct.
 
    - DB_HOST = 'localhost'
-   - DB_PW = '**your-local-database-password**'
+   - DB_PW = '**your-local-database-password**' (can be blank)
    - DB_USER = '**your-local-database-username**' (usually "root")
-   - DB_NAME = '**your-local-database-name**' (example: "recipe_db")
-   - SECRET_KEY = 'xT1tdO3CfMH01pjxC+guN1LWSt2nKvr5td6KUpw7Czg='
+   - DB_NAME = '**your-local-database-name**' (example: "resume_db")
+   - JWT_SECRET_KEY = 'xT1tdO3CfMH01pjxC+guN1LWSt2nKvr5td6KUpw7Czg='
+   - COHERE_KEY = '**your-cohere-api-key**'
 
 6. Compile and run the project locally.
 
