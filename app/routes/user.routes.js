@@ -1,40 +1,32 @@
-const { isAuthorized } = require("../authentication/authentication");
+const { authJwt } = require("../middleware");
+const controller = require("../controllers/user.controller");
 
-module.exports = (app) => {
-  const User = require("../controllers/user.controller.js");
-  const Story = require("../controllers/story.controller.js");
-  const Character = require("../controllers/character.controller.js");
-  const StoryCharacter = require("../controllers/storycharacter.controller.js");
+module.exports = function(app) {
+  app.use(function(req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+  });
 
-  var router = require("express").Router();
+  app.get("/api/test/all", controller.allAccess);
 
-  router.post("/", User.create);
-
-  router.get("/:id/stories", [isAuthorized], Story.findAll);
-  router.get("/:id/stories/:storyId", [isAuthorized], Story.findOne);
-  router.put("/:id/stories/:storyId", [isAuthorized], Story.update);
-  router.delete("/:id/stories/:storyId", Story.delete);
-
-  router.get("/:id/characters", [isAuthorized], Character.findAll);
-  router.get("/:id/characters", [isAuthorized], Character.create);
-  router.delete("/:id/characters", [isAuthorized], Character.deleteAll);
-  router.delete(
-    "/:id/characters/:characterId",
-    [isAuthorized],
-    Character.delete
+  app.get(
+    "/api/test/user",
+    [authJwt.verifyToken],
+    controller.userBoard
   );
 
-  router.post(
-    "/:id/stories/:storyId/characters",
-    [isAuthorized],
-    StoryCharacter.createStoryCharacter
-  );
-  router.get(
-    "/:id/stories/:storyId/characters",
-    [isAuthorized],
-    StoryCharacter.findAll
+  app.get(
+    "/api/test/mod",
+    [authJwt.verifyToken, authJwt.isModerator],
+    controller.moderatorBoard
   );
 
-  router.delete("/:id/stories/:storyId/characters", StoryCharacter.deleteAll);
-  app.use("/resumeapi/users", router);
+  app.get(
+    "/api/test/admin",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.adminBoard
+  );
 };
