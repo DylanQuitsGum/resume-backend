@@ -38,13 +38,6 @@ db.user.belongsToMany(db.role, {
   through: "user_roles"
 });
 
-db.comment.belongsToMany(db.resume, {
-  through: "resume_comments"
-});
-db.resume.belongsToMany(db.comment, {
-  through: "resume_comments"
-});
-
 db.user.hasMany(
   db.education,
   { as: "education" },
@@ -108,6 +101,17 @@ db.user.hasMany(
 db.comment.belongsTo(
   db.user,
   { as: "user" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+
+db.resume.hasMany(
+  db.comment,
+  { as: "comment" },
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.comment.belongsTo(
+  db.resume,
+  { as: "resume" },
   { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
 );
 
