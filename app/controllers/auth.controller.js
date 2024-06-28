@@ -11,7 +11,12 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   // Save User to Database
   User.create({
-    username: req.body.username,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    zipCode: req.body.zipCode,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)
   })
@@ -25,7 +30,7 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User registered successfully!" });
+            res.status(200).send({ message: "User registered successfully!" });
           });
         });
       } else {
@@ -43,7 +48,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
     .then(user => {
@@ -78,7 +83,6 @@ exports.signin = (req, res) => {
         }
         res.status(200).send({
           id: user.id,
-          username: user.username,
           email: user.email,
           roles: authorities,
           accessToken: token
