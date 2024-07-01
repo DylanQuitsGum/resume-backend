@@ -4,10 +4,10 @@ const db_user = process.env.DB_USER;
 const db_name = process.env.DB_NAME;
 
 module.exports = {
-  HOST: db_host,
-  USER: db_user,
-  PASSWORD: db_pw,
-  DB: db_name,
+  HOST: 'localhost',
+  USER: 'root',
+  PASSWORD: 'P#ssw0rd',
+  DB: 'resume_db',
   dialect: "mysql",
   pool: {
     max: 5,
